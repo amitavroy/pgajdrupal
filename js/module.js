@@ -18,6 +18,7 @@ mi.factory('sharedUser', ['$http', '$cookieStore', function($http, $cookieStore)
   user.token = "";
   user.auth = "";
 
+  /*login function for the user*/
   user.login = function(username, password) {
     return $http({
       headers: {'Content-Type': 'application/json'},
@@ -26,7 +27,7 @@ mi.factory('sharedUser', ['$http', '$cookieStore', function($http, $cookieStore)
       data: ""
     }).success(function(data) {
       this.token = data;
-      return $http({
+      this.auth = $http({
         headers: {'X-CSRF-Token' : this.token, 'Content-Type': 'application/json'},
         url: loginUrl,
         method: "POST",
@@ -38,14 +39,19 @@ mi.factory('sharedUser', ['$http', '$cookieStore', function($http, $cookieStore)
             token: this.token
           };
           $cookieStore.put('auth',JSON.stringify(cookieData));
-          user.auth = JSON.stringify(cookieData);
+          console.log('Cookie set');
+          return JSON.stringify(cookieData);
         });
+        return this.auth;
     });
   };
 
   user.logout = function() {};
 
-
+  /*check if auth is already present else take from cookie*/
+  user.getAuth = function() {
+    return this.auth === '' ? angular.fromJson($cookieStore.get('auth')) : angular.fromJson(this.auth);
+  }
 
   return user;
 }]);
