@@ -19,11 +19,23 @@ mi.factory('sharedUser', ['$http', '$cookieStore', '$rootScope', function($http,
   user.token = "";
 
   user.login = function(username, password) {
-    var token = this.getTooken();
-    return token;
+    var token = this.getToken();
+    return $http({
+      headers: {'X-CSRF-Token' : token, 'Content-Type': 'application/json'},
+      url: loginUrl,
+      method: "POST",
+      data: {username: username, password: password}
+    }).success(function(data) {
+        var cookieData = {
+          sessionId: data.sessid,
+          session_name: data.session_name,
+          token: this.token
+        };
+        $cookieStore.put('auth',JSON.stringify(cookieData));
+      });
   };
 
-  user.getTooken = function() {
+  user.getToken = function() {
     return this.token === "" ? this.setToken() : this.token;
   }
 
@@ -43,13 +55,15 @@ mi.factory('sharedUser', ['$http', '$cookieStore', '$rootScope', function($http,
   return user;
 }]);
 
-mi.controller('loginCtrl', function($scope, sharedUser, $location) {
+mi.controller('loginCtrl', function($scope, sharedUser, $location, $rootScope) {
   $scope.token = "";
   $scope.doLogin = function(formData) {
     var username = formData.username;
-    var password = formData.password;
+    var password = formData.pass;
+
     sharedUser.login(username, password).then(function(data) {
-      console.log(data);
+      $scope.user = data;
+      $rootScope.$broadcast('handleUserBroadcast',$scope.user);
     })
   };
 
@@ -60,7 +74,8 @@ mi.controller('loginCtrl', function($scope, sharedUser, $location) {
 });
 
 mi.controller('homeCtrl', function($scope, sharedUser) {
-  $scope.$on('handleToken', function(event, projects) {
-    $scope.token = projects;
+
+  $scope.$on('handleUserBroadcast', function(event, user) {
+    $scope.user = user;
   });
 });
