@@ -1,3 +1,4 @@
+/*defining the urls*/
 var server = "http://money.amitavroy.com/?q=";
 var loginUrl = server + "mobileapp/user/login.json";
 var tokenUrl = server + "services/session/token";
@@ -13,45 +14,53 @@ mi.config(['$routeProvider', function($routeProvider) {
 }]);
 
 /*user object*/
-mi.factory('sharedUser', ['$http', '$cookieStore', function($http, $cookieStore) {
+mi.factory('sharedUser', ['$http', '$cookieStore', '$rootScope', function($http, $cookieStore, $rootScope) {
   var user = {};
   user.token = "";
-  user.auth = "";
 
-  /*login function for the user*/
   user.login = function(username, password) {
-    return $http({
+    var token = this.getTooken();
+    return token;
+  };
+
+  user.getTooken = function() {
+    return this.token === "" ? this.setToken() : this.token;
+  }
+
+  user.setToken = function() {
+    this.token = $http({
       headers: {'Content-Type': 'application/json'},
       url: tokenUrl,
       method: "POST",
       data: ""
     }).success(function(data) {
-      this.token = data;
-      this.auth = $http({
-        headers: {'X-CSRF-Token' : this.token, 'Content-Type': 'application/json'},
-        url: loginUrl,
-        method: "POST",
-        data: {username: username, password: password}
-      }).success(function(data) {
-          var cookieData = {
-            sessionId: data.sessid,
-            session_name: data.session_name,
-            token: this.token
-          };
-          $cookieStore.put('auth',JSON.stringify(cookieData));
-          console.log('Cookie set');
-          return JSON.stringify(cookieData);
-        });
-        return this.auth;
-    });
-  };
-
-  user.logout = function() {};
-
-  /*check if auth is already present else take from cookie*/
-  user.getAuth = function() {
-    return this.auth === '' ? angular.fromJson($cookieStore.get('auth')) : angular.fromJson(this.auth);
+        this.token = data;
+        console.log(this.token);
+        $rootScope.$broadcast('handleToken',this.token);
+      });
   }
 
   return user;
 }]);
+
+mi.controller('loginCtrl', function($scope, sharedUser, $location) {
+  $scope.token = "";
+  $scope.doLogin = function(formData) {
+    var username = formData.username;
+    var password = formData.password;
+    sharedUser.login(username, password).then(function(data) {
+      console.log(data);
+    })
+  };
+
+  $scope.$on('handleToken', function(event, projects) {
+    $scope.token = projects;
+    $location.path('/home');
+  });
+});
+
+mi.controller('homeCtrl', function($scope, sharedUser) {
+  $scope.$on('handleToken', function(event, projects) {
+    $scope.token = projects;
+  });
+});
