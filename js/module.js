@@ -27,6 +27,8 @@ mi.factory('sharedUser', ['$http', '$cookieStore', '$rootScope', function($http,
       method: "POST",
       data: {username: username, password: password}
     }).success(function(data) {
+        console.log(data.session_name);
+        console.log(data.sessid);
         $cookieStore.put('auth', 1);
         $cookieStore.put(data.session_name, data.sessid);
       });
@@ -48,9 +50,28 @@ mi.controller('loginCtrl', function($scope, sharedUser, $location, $rootScope) {
 
 });
 
-mi.controller('homeCtrl', function($scope, sharedUser, $cookieStore, $location) {
+mi.controller('homeCtrl', function($scope, sharedUser, $cookieStore, $location, $http) {
   var auth = $cookieStore.get('auth');
   if (auth != 1) {
     $location.path('/')
   }
+
+  $scope.getNode = function() {
+    $http({
+      headers: {'Content-Type': 'application/json'},
+      url: tokenUrl,
+      method: "POST",
+      data: ""
+    }).success(function(data) {
+        console.log(data);
+        $http({
+          headers: {'Content-Type': 'application/json', "session": "SESS3b000297a4f2b7dcb8c2da1e33f6982f=PvcGEwx-WKMpk2cKoKd-m2c2N9VcgP7NYFcYCNAhsl0", "token": data},
+          url: "http://money.amitavroy.com/?q=mobileapp/node/1",
+          method: "POST",
+          data: ""
+        }).success(function(nodeData) {
+            console(nodeData);
+          });
+      });
+  };
 });
