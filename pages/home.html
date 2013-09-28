@@ -1,10 +1,14 @@
 <div ng-controller="homeCtrl">
-	<p>Scope: {{ token }}</p>
   <div class="col-md-12 col-sm-12">
     <h1>Welcome to Mahindra Idol 5</h1>
+		<button ng-click="getNodes()">Node</button>
+		<a href="#/login">Login</a>
   </div>
 
-	<button ng-click="getNode()">Node</button>
-
-	<a href="#/login">Login</a>
+	<div class="col-md-12 col-sm-12">
+		<div ng-repeat="node in nodes">
+			<h1>{{ node.title }}</h1>
+			<p>A {{ node.type }} by {{ node.name }}</p>
+		</div>
+	</div>
 </div>
