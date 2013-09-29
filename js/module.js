@@ -39,7 +39,6 @@ mi.factory('sharedUser', ['$http', '$cookieStore', function($http, $cookieStore)
             token: this.token
           };
           $cookieStore.put('auth',JSON.stringify(cookieData));
-          console.log('Cookie set');
           return JSON.stringify(cookieData);
         });
         return this.auth;
