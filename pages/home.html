@@ -6,7 +6,7 @@
   </div>
 
 	<div class="col-md-12 col-sm-12">
-		<div ng-repeat="node in nodes">
+		<div ng-repeat="node in nodes|orderBy:node.nid:reverse">
 			<h1>{{ node.title }}</h1>
 			<p>A {{ node.type }} by {{ node.name }}</p>
 		</div>

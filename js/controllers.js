@@ -1,21 +1,31 @@
-/*login controller*/
-mi.controller('loginCtrl', function($scope, sharedUser, $location) {
-  console.log('Login please');
-  /*handling the click on login button*/
-  $scope.doLogin = function(formData) {
-    if (formData.username && formData.pass) {
-      sharedUser.login(formData.username, formData.pass).then(function(data) {
-        console.log(data);
-        $location.path('/home');
-      });
-    }
-    else {
-      alert('Please enter your username and password');
-    }
+mi.controller('loginCtrl', function($scope, sharedUser, $location, $rootScope) {
+  $scope.doLogin = function(username, password) {
+//    var username = form.username;
+//    var password = form.pass;
+    sharedUser.login("admin", "m1nda").then(function(data) {
+      $location.path('/home');
+    });
   };
 });
 
-mi.controller('homeCtrl', function($scope, sharedUser, $cookieStore) {
-  console.log('I come back home');
-  console.log(sharedUser.getAuth());
+mi.controller('homeCtrl', function($scope, sharedUser, NodeFactory, $cookieStore, $location) {
+  $scope.auth = $cookieStore.get('auth');
+  $scope.token = $scope.auth.token;
+  $scope.nodes = {};
+
+  $scope.$on('handleTokenBroadcast', function(event, token) {
+    $scope.token = token;
+  });
+
+  $scope.getNodes = function() {
+    sharedUser.getToken($scope.auth.uid).then(function(data) {
+      NodeFactory.getLatest($scope.token, $scope.auth.uid).then(function(nodes) {
+        angular.forEach(nodes.data, function(value, key) {
+          $scope.nodes[key] = value;
+        });
+
+        console.log($scope.nodes);
+      });
+    });
+  };
 });
