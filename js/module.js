@@ -14,6 +14,7 @@ mi.config(['$routeProvider', function($routeProvider) {
   $routeProvider.otherwise({redirectTo: "/login"});
 }]);
 
+/*Removing the X-Requested header, need to check the actual required.*/
 mi.config(['$httpProvider', function($httpProvider) {
   delete $httpProvider.defaults.headers.common["X-Requested-With"]
 }]);
@@ -40,7 +41,7 @@ mi.factory('sharedUser', ['$http', '$cookieStore', '$rootScope', function($http,
           name: userData.name
         };
         $cookieStore.put('auth', auth);
-        console.log(auth);
+        // console.log(auth);
       });
   };
 
@@ -68,6 +69,7 @@ mi.factory('sharedUser', ['$http', '$cookieStore', '$rootScope', function($http,
   return user;
 }]);
 
+/*This is the node factory which will handle all node related actions.*/
 mi.factory('NodeFactory', ['$http', function($http) {
   var Node = {};
 
@@ -91,7 +93,6 @@ mi.factory('NodeFactory', ['$http', function($http) {
         uid: uid
       })
     }).success(function(data) {
-        console.log(data);
       });
   };
 
