@@ -21,6 +21,7 @@ mi.controller('homeCtrl', function($scope, sharedUser, NodeFactory, $cookieStore
 
   sharedUser.getToken($scope.auth.uid).then(function(data) {
     NodeFactory.getLatest($scope.token, $scope.auth.uid).then(function(nodes) {
+      // console.log(nodes);
       angular.forEach(nodes.data, function(value, key) {
         $scope.nodes[key] = value;
       });
