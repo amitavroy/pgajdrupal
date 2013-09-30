@@ -1,5 +1,5 @@
 /*defining the urls*/
-var server = "http://localhost/d7/";
+var server = "http://localhost/personal/drupal_money/";
 var loginUrl = server + "rest/user/authenticate";
 var tokenUrl = server + "rest/token/get";
 var latestNodesUrl = server + "rest/node/latest";

@@ -28,4 +28,8 @@ mi.controller('homeCtrl', function($scope, sharedUser, NodeFactory, $cookieStore
       console.log($scope.nodes);
     });
   });
+  
+  $scope.mouseClick = function(nid) {
+    console.log(nid);
+  }
 });
