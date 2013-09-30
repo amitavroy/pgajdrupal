@@ -3,6 +3,7 @@ var server = "http://localhost/personal/drupal_money/";
 var loginUrl = server + "rest/user/authenticate";
 var tokenUrl = server + "rest/token/get";
 var latestNodesUrl = server + "rest/node/latest";
+var singleNodeUrl = server + "rest/getnode/";
 
 /*defining the module*/
 var mi = angular.module('mi', ['ngCookies']);
@@ -11,6 +12,7 @@ var mi = angular.module('mi', ['ngCookies']);
 mi.config(['$routeProvider', function($routeProvider) {
   $routeProvider.when("/login", {templateUrl: "pages/login.html", controller: mi.loginCtrl});
   $routeProvider.when("/home", {templateUrl: "pages/home.html", controller: mi.homeCtrl});
+  $routeProvider.when("/node/:nid", {templateUrl: "pages/fullnode.html", controller: mi.fullNodeCtrl});
   $routeProvider.otherwise({redirectTo: "/login"});
 }]);
 
@@ -77,8 +79,16 @@ mi.factory('NodeFactory', ['$http', function($http) {
 
   };
 
-  Node.getNode = function() {
-
+  Node.getNode = function(token, nid) {
+    return $http({
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'X-CSRF-Token': token
+      },
+      method: "POST",
+      url: singleNodeUrl + nid,
+      data: ""
+    });
   };
 
   Node.getLatest = function(token, uid) {
