@@ -3,7 +3,7 @@ mi.controller('loginCtrl', function($scope, sharedUser, $location, $rootScope) {
   $scope.doLogin = function(username, password) {
 //    var username = form.username;
 //    var password = form.pass;
-    sharedUser.login("admin", "m1nda").then(function(data) {
+    sharedUser.login("admin", "KillJ0y").then(function(data) {
       $location.path('/home');
     });
   };
@@ -21,10 +21,22 @@ mi.controller('homeCtrl', function($scope, sharedUser, NodeFactory, $cookieStore
 
   sharedUser.getToken($scope.auth.uid).then(function(data) {
     NodeFactory.getLatest($scope.token, $scope.auth.uid).then(function(nodes) {
+      var count = nodes.data.length;
+      var keys = [];
       angular.forEach(nodes.data, function(value, key) {
         $scope.nodes[key] = value;
+        keys.push(key);
       });
-      console.log($scope.nodes);
+      
+      var keyMax = Math.max.apply(null, keys);
+      var keyMin = Math.min.apply(null, keys);
+      
+      var finalNodes =[];
+      for (var i = keyMax; i >= keyMin; i--) {
+        finalNodes.push($scope.nodes[i]);
+      }
+      
+      $scope.finalNodes = finalNodes;
     });
   });
   
@@ -43,10 +55,4 @@ mi.controller('fullNodeCtrl', function($scope, sharedUser, NodeFactory, $cookieS
   });
 
   $scope.nid = $routeParams.nid;
-  console.log("Controller nid: " + $scope.nid);
-  
-  /*Fetching node from the node factory*/
-  // NodeFactory.getNode($scope.token, $scope.nid).then(function(node) {
-    // $scope.node = node.data;
-  // });
 });

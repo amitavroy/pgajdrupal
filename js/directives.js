@@ -16,9 +16,14 @@ mi.directive('node', function() {
       $scope.nid = $scope.number;
       
       NodeFactory.getNode($scope.token, $scope.nid).then(function(thisNode) {
-        console.log(thisNode.data);
         var node = thisNode.data;
+        
         $scope.nodetitle = node.title;
+        
+        // if body copy is not present.
+        if (node.body.und) {
+          $scope.body = node.body.und[0].safe_value;
+        }
       });
     }
   };
