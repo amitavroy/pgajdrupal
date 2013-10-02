@@ -1,5 +1,5 @@
 /*defining the urls*/
-var server = "http://192.168.3.47/RND/fl360/";
+var server = "http://localhost/personal/drupal_money/";
 var loginUrl = server + "rest/user/authenticate";
 var tokenUrl = server + "rest/token/get";
 var latestNodesUrl = server + "rest/node/latest";
@@ -22,7 +22,7 @@ mi.config(['$httpProvider', function($httpProvider) {
 }]);
 
 /*user object*/
-mi.factory('sharedUser', ['$http', '$cookieStore', '$rootScope', function($http, $cookieStore, $rootScope) {
+mi.factory('sharedUser', ['$http', '$cookieStore', '$rootScope', '$location', function($http, $cookieStore, $rootScope, $location) {
   var user = {};
 
   user.login = function(username, password) {
@@ -43,11 +43,16 @@ mi.factory('sharedUser', ['$http', '$cookieStore', '$rootScope', function($http,
           name: userData.name
         };
         $cookieStore.put('auth', auth);
-        // console.log(auth);
       });
   };
 
   user.getToken = function(uid) {
+    /* if no user id is present or user id is null, then authentication is not correct. */
+    if (!uid) {
+      // $location.path('#/login');
+      // alert('No user id');
+    }
+    
     return $http({
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
@@ -65,6 +70,8 @@ mi.factory('sharedUser', ['$http', '$cookieStore', '$rootScope', function($http,
         var cookieData = $cookieStore.get('auth');
         cookieData.token = tokenData;
         $cookieStore.put('auth', cookieData);
+      }).error(function(data) {
+        alert('Token not valid');
       });
   };
 
