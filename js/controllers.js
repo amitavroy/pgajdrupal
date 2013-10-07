@@ -24,23 +24,24 @@ mi.controller('homeCtrl', function($scope, sharedUser, NodeFactory, $cookieStore
 
   sharedUser.getToken($scope.auth.uid).then(function(data) {
     NodeFactory.getLatest($scope.token, $scope.auth.uid).then(function(nodes) {
-      var count = nodes.data.length;
-      var keys = [];
-      angular.forEach(nodes.data, function(value, key) {
-        $scope.nodes[key] = value;
-        keys.push(key);
-      });
-      
-      var keyMax = Math.max.apply(null, keys);
-      var keyMin = Math.min.apply(null, keys);
-      
-      var finalNodes =[];
-      for (var i = keyMax; i >= keyMin; i--) {
-        finalNodes.push($scope.nodes[i]);
-      }
-      
-      $scope.finalNodes = finalNodes;
-      console.log(finalNodes);
+        var count = nodes.data.length;
+        var keys = [];
+        angular.forEach(nodes.data, function(value, key) {
+          $scope.nodes[key] = value;
+          keys.push(key);
+        });
+        
+        var keyMax = Math.max.apply(null, keys);
+        var keyMin = Math.min.apply(null, keys);
+        
+        var finalNodes =[];
+        for (var i = keyMax; i >= keyMin; i--) {
+          if ($scope.nodes[i]) {
+            finalNodes.push($scope.nodes[i]);
+          }
+        }
+        
+        $scope.finalNodes = finalNodes;
     });
   });
   
