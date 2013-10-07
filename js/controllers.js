@@ -1,11 +1,14 @@
 /*This is the controller for login page.*/
 mi.controller('loginCtrl', function($scope, sharedUser, $location, $rootScope) {
   $scope.doLogin = function(username, password) {
-//    var username = form.username;
-//    var password = form.pass;
-    sharedUser.login("admin", "KillJ0y").then(function(data) {
-      $location.path('/home');
-    });
+    if (username && password) {
+      sharedUser.login(username, password).then(function(data) {
+        $location.path('/home');
+      });
+    }
+    else {
+      alert("Please fill in username and password");
+    }
   };
 });
 
@@ -37,6 +40,7 @@ mi.controller('homeCtrl', function($scope, sharedUser, NodeFactory, $cookieStore
       }
       
       $scope.finalNodes = finalNodes;
+      console.log(finalNodes);
     });
   });
   

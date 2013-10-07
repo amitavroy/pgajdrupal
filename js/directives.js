@@ -1,7 +1,7 @@
 mi.directive('node', function() {
   return {
     restrict: 'E',
-    templateUrl: 'includes/node.html',
+    templateUrl: 'includes/directives/node.html',
     scope: {
       number: '='
     },

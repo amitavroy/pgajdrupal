@@ -1,5 +1,5 @@
 /*defining the urls*/
-var server = "http://localhost/personal/drupal_money/";
+var server = "http://staging.focalworks.in/fl360/";
 var loginUrl = server + "rest/user/authenticate";
 var tokenUrl = server + "rest/token/get";
 var latestNodesUrl = server + "rest/node/latest";
@@ -43,14 +43,16 @@ mi.factory('sharedUser', ['$http', '$cookieStore', '$rootScope', '$location', fu
           name: userData.name
         };
         $cookieStore.put('auth', auth);
+      }).error(function() {
+        alert('The username and/or password is wrong.');
       });
   };
 
   user.getToken = function(uid) {
     /* if no user id is present or user id is null, then authentication is not correct. */
     if (!uid) {
-      // $location.path('#/login');
-      // alert('No user id');
+      $location.path('#/login');
+      alert('No user id');
     }
     
     return $http({
@@ -70,8 +72,6 @@ mi.factory('sharedUser', ['$http', '$cookieStore', '$rootScope', '$location', fu
         var cookieData = $cookieStore.get('auth');
         cookieData.token = tokenData;
         $cookieStore.put('auth', cookieData);
-      }).error(function(data) {
-        alert('Token not valid');
       });
   };
 
