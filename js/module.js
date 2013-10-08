@@ -1,8 +1,9 @@
 /*defining the urls*/
-var server = "http://localhost/personal/drupal_money/";
+var server = "http://staging.focalworks.in/fl360/";
 var loginUrl = server + "rest/user/authenticate";
 var tokenUrl = server + "rest/token/get";
 var latestNodesUrl = server + "rest/node/latest";
+var singleNodeUrl = server + "rest/getnode/";
 
 /*defining the module*/
 var mi = angular.module('mi', ['ngCookies']);
@@ -11,15 +12,17 @@ var mi = angular.module('mi', ['ngCookies']);
 mi.config(['$routeProvider', function($routeProvider) {
   $routeProvider.when("/login", {templateUrl: "pages/login.html", controller: mi.loginCtrl});
   $routeProvider.when("/home", {templateUrl: "pages/home.html", controller: mi.homeCtrl});
+  $routeProvider.when("/node/:nid", {templateUrl: "pages/fullnode.html", controller: mi.fullNodeCtrl});
   $routeProvider.otherwise({redirectTo: "/login"});
 }]);
 
+/*Removing the X-Requested header, need to check the actual required.*/
 mi.config(['$httpProvider', function($httpProvider) {
   delete $httpProvider.defaults.headers.common["X-Requested-With"]
 }]);
 
 /*user object*/
-mi.factory('sharedUser', ['$http', '$cookieStore', '$rootScope', function($http, $cookieStore, $rootScope) {
+mi.factory('sharedUser', ['$http', '$cookieStore', '$rootScope', '$location', function($http, $cookieStore, $rootScope, $location) {
   var user = {};
 
   user.login = function(username, password) {
@@ -40,11 +43,18 @@ mi.factory('sharedUser', ['$http', '$cookieStore', '$rootScope', function($http,
           name: userData.name
         };
         $cookieStore.put('auth', auth);
-        console.log(auth);
+      }).error(function() {
+        alert('The username and/or password is wrong.');
       });
   };
 
   user.getToken = function(uid) {
+    /* if no user id is present or user id is null, then authentication is not correct. */
+    if (!uid) {
+      // $location.path('#/login');
+      // alert('No user id');
+    }
+    
     return $http({
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
@@ -68,6 +78,7 @@ mi.factory('sharedUser', ['$http', '$cookieStore', '$rootScope', function($http,
   return user;
 }]);
 
+/*This is the node factory which will handle all node related actions.*/
 mi.factory('NodeFactory', ['$http', function($http) {
   var Node = {};
 
@@ -75,8 +86,16 @@ mi.factory('NodeFactory', ['$http', function($http) {
 
   };
 
-  Node.getNode = function() {
-
+  Node.getNode = function(token, nid) {
+    return $http({
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'X-CSRF-Token': token
+      },
+      method: "POST",
+      url: singleNodeUrl + nid,
+      data: ""
+    });
   };
 
   Node.getLatest = function(token, uid) {
@@ -91,7 +110,6 @@ mi.factory('NodeFactory', ['$http', function($http) {
         uid: uid
       })
     }).success(function(data) {
-        console.log(data);
       });
   };
 

@@ -1,14 +1,13 @@
 <div ng-controller="homeCtrl">
   <div class="col-md-12 col-sm-12">
-    <h1>Welcome to Mahindra Idol 5</h1>
-		<button ng-click="getNodes()">Node</button>
-		<a href="#/login">Login</a>
+    <h1>Welcome to FL360 mobile app</h1>
   </div>
 
 	<div class="col-md-12 col-sm-12">
-		<div ng-repeat="node in nodes|orderBy:node.nid:reverse">
-			<h1>{{ node.title }}</h1>
-			<p>A {{ node.type }} by {{ node.name }}</p>
+		<div ng-repeat="node in finalNodes" ng-click="showNode(node.nid)" class="node teaser">
+			<h1 class="title node-title">{{ node.title }}</h1>
+			<p class="metag-tag">By {{ node.name }}</p>
+      <p ng-bind-html-unsafe="node.body.und[0].safe_summary"></p>
 		</div>
 	</div>
 </div>
