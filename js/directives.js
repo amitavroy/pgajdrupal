@@ -5,8 +5,8 @@ mi.directive('node', function() {
     scope: {
       number: '='
     },
-    controller: function($scope, $element, $attrs, NodeFactory, $cookieStore) {
-      $scope.auth = $cookieStore.get('auth');
+    controller: function($scope, $element, $attrs, NodeFactory, localStorageService) {
+      $scope.auth = localStorageService.get('auth');
       $scope.token = $scope.auth.token;
       
       $scope.$on('handleTokenBroadcast', function(event, token) {

@@ -6,7 +6,7 @@ var latestNodesUrl = server + "rest/node/latest";
 var singleNodeUrl = server + "rest/getnode/";
 
 /*defining the module*/
-var mi = angular.module('mi', ['ngCookies']);
+var mi = angular.module('mi', ['LocalStorageModule']);
 
 /*defining the routes*/
 mi.config(['$routeProvider', function($routeProvider) {
@@ -22,7 +22,7 @@ mi.config(['$httpProvider', function($httpProvider) {
 }]);
 
 /*user object*/
-mi.factory('sharedUser', ['$http', '$cookieStore', '$rootScope', '$location', function($http, $cookieStore, $rootScope, $location) {
+mi.factory('sharedUser', ['$http', 'localStorageService', '$rootScope', '$location', function($http, localStorageService, $rootScope, $location) {
   var user = {};
 
   user.login = function(username, password) {
@@ -42,8 +42,8 @@ mi.factory('sharedUser', ['$http', '$cookieStore', '$rootScope', '$location', fu
           uid: userData.uid,
           name: userData.name
         };
-        $cookieStore.put('auth', auth);
-      }).error(function() {
+        localStorageService.add('auth', auth);
+      }).error(function(data, status, headers, config) {
         alert('The username and/or password is wrong.');
       });
   };
@@ -69,9 +69,9 @@ mi.factory('sharedUser', ['$http', '$cookieStore', '$rootScope', '$location', fu
         $rootScope.$broadcast('handleTokenBroadcast', tokenData);
 
         // updating the cookie token
-        var cookieData = $cookieStore.get('auth');
+        var cookieData = localStorageService.get('auth');
         cookieData.token = tokenData;
-        $cookieStore.put('auth', cookieData);
+        localStorageService.get('auth', cookieData);
       });
   };
 

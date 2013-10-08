@@ -1,5 +1,5 @@
 /*This is the controller for login page.*/
-mi.controller('loginCtrl', function($scope, sharedUser, $location, $rootScope) {
+mi.controller('loginCtrl', function($scope, sharedUser, $location) {
   $scope.doLogin = function(username, password) {
     if (username && password) {
       sharedUser.login(username, password).then(function(data) {
@@ -13,8 +13,8 @@ mi.controller('loginCtrl', function($scope, sharedUser, $location, $rootScope) {
 });
 
 /*This is the home page controller.*/
-mi.controller('homeCtrl', function($scope, sharedUser, NodeFactory, $cookieStore, $location) {
-  $scope.auth = $cookieStore.get('auth');
+mi.controller('homeCtrl', function($scope, sharedUser, NodeFactory, localStorageService, $location) {
+  $scope.auth = localStorageService.get('auth');
   $scope.token = $scope.auth.token;
   $scope.nodes = {};
 
@@ -50,8 +50,8 @@ mi.controller('homeCtrl', function($scope, sharedUser, NodeFactory, $cookieStore
   }
 });
 
-mi.controller('fullNodeCtrl', function($scope, sharedUser, NodeFactory, $cookieStore, $location, $routeParams) {
-  $scope.auth = $cookieStore.get('auth');
+mi.controller('fullNodeCtrl', function($scope, sharedUser, NodeFactory, localStorageService, $location, $routeParams) {
+  $scope.auth = localStorageService.get('auth');
   $scope.token = $scope.auth.token;
   $scope.node = "";
 
@@ -60,4 +60,5 @@ mi.controller('fullNodeCtrl', function($scope, sharedUser, NodeFactory, $cookieS
   });
 
   $scope.nid = $routeParams.nid;
+  console.log($scope.nid);
 });
