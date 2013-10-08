@@ -1,4 +1,18 @@
 @body-background: #e5e5e5;
+@blue-background: #EFF4F7;
+
+.rounded-corners (@radius: 0) {
+  -webkit-border-radius: @radius;
+  -moz-border-radius: @radius;
+  -ms-border-radius: @radius;
+  -o-border-radius: @radius;
+  border-radius: @radius;
+}
+.box-shadow {
+-moz-box-shadow: 0 0 10px #DBDBD8;
+-webkit-box-shadow: 0 0 10px #DBDBD8;
+box-shadow: 0 0 10px #DBDBD8;
+}
 
 body {
   background-color: @body-background;
@@ -7,6 +21,21 @@ body {
 /*Node styling*/
 .node {
   &.teaser {
-
+    &:hover {
+      cursor: pointer;
+    }
+    h1, h2, h3 {
+      padding: 0;
+      margin: 0;
+    }
+    h1.node-title {
+      font-size: 1.4em;
+      margin-bottom: 0.5em;
+    }
+    .rounded-corners (@radius: 0.6em);
+    .box-shadow;
+    background-color: @blue-background;
+    margin-bottom: 0.5em;
+    padding: 10px;
   }
 }
