@@ -51,8 +51,8 @@ mi.factory('sharedUser', ['$http', '$cookieStore', '$rootScope', '$location', fu
   user.getToken = function(uid) {
     /* if no user id is present or user id is null, then authentication is not correct. */
     if (!uid) {
-      // $location.path('#/login');
-      // alert('No user id');
+      $location.path('#/login');
+      alert('No user id');
     }
     
     return $http({
