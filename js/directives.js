@@ -1,7 +1,7 @@
 mi.directive('node', function() {
   return {
     restrict: 'E',
-    templateUrl: 'includes/directives/node.html',
+    templateUrl: 'includes/directives/node_full.html',
     scope: {
       number: '='
     },
@@ -25,6 +25,26 @@ mi.directive('node', function() {
           $scope.body = node.body.und[0].safe_value;
         }
       });
+    }
+  };
+});
+
+mi.directive('teaser', function() {
+  return {
+    restrict: 'E',
+    templateUrl: 'includes/directives/node_teaser.html',
+    scope: {
+      number: '=',
+      object: '='
+    },
+    link: function (scope, element, attrs) {
+      scope.node = [];
+      // console.log(scope.object.title);
+      var title = scope.object.title;
+      console.log(title);
+
+      scope.node.title = title;
+      scope.node.name = scope.object.name;
     }
   };
 });

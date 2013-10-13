@@ -1,0 +1,13 @@
+<div class="node-wrap">
+  <div class="title">
+    <h1 class="title">{{ node.title }}</h1>
+  </div>
+  <div class="teaser">
+    <p ng-bind-html-unsafe="node.body.und[0].safe_summary"></p>
+  </div>
+</div>
+
+<div class="meta-container clearfix">
+  <div class="time">By {{ node.name }}</div> 
+  <div class="profile_pic"><img src="../images/profile_pic.jpg" alt="#" width="72" height="72" /></div>
+</div>

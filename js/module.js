@@ -50,7 +50,7 @@ mi.factory('sharedUser', ['$http', 'localStorageService', '$rootScope', '$locati
 
   user.getToken = function(uid) {
     /* if no user id is present or user id is null, then authentication is not correct. */
-    if (!uid) {
+    if (!uid || uid == 0) {
       $location.path('#/login');
       alert('No user id');
     }
@@ -82,9 +82,7 @@ mi.factory('sharedUser', ['$http', 'localStorageService', '$rootScope', '$locati
 mi.factory('NodeFactory', ['$http', function($http) {
   var Node = {};
 
-  Node.getNodeMultiple = function() {
-
-  };
+  /*Node.getNodeMultiple = function() {};*/
 
   Node.getNode = function(token, nid) {
     return $http({
