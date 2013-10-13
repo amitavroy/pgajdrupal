@@ -41,7 +41,6 @@ mi.directive('teaser', function() {
       scope.node = [];
       // console.log(scope.object.title);
       var title = scope.object.title;
-      console.log(title);
 
       scope.node.title = title;
       scope.node.name = scope.object.name;
