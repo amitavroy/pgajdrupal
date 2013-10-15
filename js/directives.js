@@ -1,3 +1,24 @@
+/* This is the teaser directive */
+mi.directive('teaser', function() {
+  return {
+    restrict: 'E',
+    templateUrl: 'includes/directives/node_teaser.html',
+    scope: {
+      number: '=',
+      object: '='
+    },
+    link: function (scope, element, attrs) {
+      scope.node = [];
+      // console.log(scope.object.title);
+      var title = scope.object.title;
+
+      scope.node.title = title;
+      scope.node.name = scope.object.name;
+    }
+  };
+});
+
+/* This is the full node directive */
 mi.directive('node', function() {
   return {
     restrict: 'E',
@@ -25,25 +46,6 @@ mi.directive('node', function() {
           $scope.body = node.body.und[0].safe_value;
         }
       });
-    }
-  };
-});
-
-mi.directive('teaser', function() {
-  return {
-    restrict: 'E',
-    templateUrl: 'includes/directives/node_teaser.html',
-    scope: {
-      number: '=',
-      object: '='
-    },
-    link: function (scope, element, attrs) {
-      scope.node = [];
-      // console.log(scope.object.title);
-      var title = scope.object.title;
-
-      scope.node.title = title;
-      scope.node.name = scope.object.name;
     }
   };
 });
