@@ -16,6 +16,8 @@
 	<script type="text/javascript" src="js/directives.js"></script>
 </head>
 <body>
-	<div class="container" ng-view=""></div>
+	<div id="global-wrapper" ng-controller="globalCtrl">
+		<div class="container" ng-view=""></div>
+	</div>
 </body>
 </html>

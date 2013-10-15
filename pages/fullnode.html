@@ -1,4 +1,7 @@
 <div class="full-node-wrapper" id="full-node-wrapper" ng-controller="fullNodeCtrl">
-  <node number="nid"></node>
-  <a href="#/home" class="btn btn-info">Go back</a>
+  <ng-include src="globalNavigationURL"></ng-include>
+  <div class="col-md-12 col-sm-12">
+    <node number="nid"></node>
+    <a href="#/home" class="btn btn-info">Go back</a>
+  </div>
 </div>

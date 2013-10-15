@@ -13,6 +13,7 @@ mi.config(['$routeProvider', function($routeProvider) {
   $routeProvider.when("/login", {templateUrl: "pages/login.html", controller: mi.loginCtrl});
   $routeProvider.when("/home", {templateUrl: "pages/home.html", controller: mi.homeCtrl});
   $routeProvider.when("/node/:nid", {templateUrl: "pages/fullnode.html", controller: mi.fullNodeCtrl});
+  $routeProvider.when("/create", {templateUrl: "pages/create.html", controller: mi.createCtrl});
   $routeProvider.otherwise({redirectTo: "/login"});
 }]);
 

@@ -1,3 +1,9 @@
+mi.controller('globalCtrl', function($scope, localStorageService) {
+  $scope.globalNavigationURL = "includes/nav.html";
+  $scope.globalAuth = localStorageService.get('auth');
+  $scope.globalToken = $scope.globalAuth.token;
+});
+
 /*This is the controller for login page.*/
 mi.controller('loginCtrl', function($scope, sharedUser, $location) {
   $scope.doLogin = function(username, password) {
@@ -61,4 +67,15 @@ mi.controller('fullNodeCtrl', function($scope, sharedUser, NodeFactory, localSto
 
   $scope.nid = $routeParams.nid;
   console.log($scope.nid);
+});
+
+/* The create node controller is here */
+mi.controller('createCtrl', function($scope, NodeFactory) {
+  var node = [];
+  node.title = "";
+  node.body = "";
+
+  NodeFactory.getNode($scope.globalToken, 107).then(function(data) {
+    console.log(data.data);
+  })
 });
