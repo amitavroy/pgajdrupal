@@ -49,3 +49,30 @@ mi.directive('node', function() {
     }
   };
 });
+
+mi.directive('termselection', function() {
+  return {
+    restrict: 'E',
+    scope: {},
+    templateUrl: 'includes/directives/term_selection.html',
+    controller: function($scope, $element, $attrs, TaxonomyFactory) {
+      TaxonomyFactory.getTerms($scope.globalToken, $scope.globalUid).then(function(data) {
+        var terms = [];
+
+        angular.forEach(data.data, function(value, key) {
+          terms.push({
+            'id': value.tid,
+            'value': value.name,
+            'status': false
+          });
+        });
+
+        $scope.terms = terms;
+
+        $scope.changed = function(terms) {
+          TaxonomyFactory.updateSelected(terms);
+        }
+      });
+    }
+  }
+});

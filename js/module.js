@@ -1,12 +1,15 @@
 /*defining the urls*/
-var server = "http://staging.focalworks.in/fl360/";
+//var server = "http://staging.focalworks.in/fl360/";
+var server = "http://ob2.focalworks.in:8080/RND/fl360/";
 var loginUrl = server + "rest/user/authenticate";
 var tokenUrl = server + "rest/token/get";
 var latestNodesUrl = server + "rest/node/latest";
 var singleNodeUrl = server + "rest/getnode/";
+var vocabLoadUrl = server + "rest/getterms/";
+var nodeSave = server + "rest/savenode/";
 
 /*defining the module*/
-var mi = angular.module('mi', ['LocalStorageModule']);
+var mi = angular.module('mi', ['LocalStorageModule', 'ui.tinymce']);
 
 /*defining the routes*/
 mi.config(['$routeProvider', function($routeProvider) {
@@ -112,5 +115,54 @@ mi.factory('NodeFactory', ['$http', function($http) {
       });
   };
 
+  Node.saveNode = function(token, uid, NodeData) {
+    return $http({
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'X-CSRF-Token': token
+      },
+      method: "POST",
+      url: nodeSave,
+      data: $.param({
+        title: NodeData.title,
+        body: NodeData.body,
+        uid: uid
+      })
+    }).success(function(data) {
+      });
+  }
+
   return Node;
+}]);
+
+/* this factory method is controlling the taxonomy */
+mi.factory('TaxonomyFactory', ['$http', '$rootScope', function($http, $rootScope) {
+  var Terms = {};
+  this.selectedTerms = {};
+
+  Terms.getTerms = function(token, uid) {
+    return $http({
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'X-CSRF-Token': token
+      },
+      method: "POST",
+      url: vocabLoadUrl + '2',
+      data: $.param({
+        uid: uid
+      })
+    }).success(function(data) {
+      });
+  }
+
+  Terms.updateSelected = function(terms) {
+    this.selectedTerms = terms;
+    $rootScope.$broadcast('handleTermSelectBroadcast', terms);
+  }
+
+  Terms.giveTerms = function() {
+    return this.selectedTerms;
+  }
+
+  return Terms;
 }]);

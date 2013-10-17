@@ -2,6 +2,7 @@ mi.controller('globalCtrl', function($scope, localStorageService) {
   $scope.globalNavigationURL = "includes/nav.html";
   $scope.globalAuth = localStorageService.get('auth');
   $scope.globalToken = $scope.globalAuth.token;
+  $scope.globalUid = $scope.globalAuth.uid;
 });
 
 /*This is the controller for login page.*/
@@ -36,21 +37,21 @@ mi.controller('homeCtrl', function($scope, sharedUser, NodeFactory, localStorage
           $scope.nodes[key] = value;
           keys.push(key);
         });
-        
+
         var keyMax = Math.max.apply(null, keys);
         var keyMin = Math.min.apply(null, keys);
-        
+
         var finalNodes =[];
         for (var i = keyMax; i >= keyMin; i--) {
           if ($scope.nodes[i]) {
             finalNodes.push($scope.nodes[i]);
           }
         }
-        
+
         $scope.finalNodes = finalNodes;
     });
   });
-  
+
   $scope.showNode = function(nid) {
     $location.path("node/" + nid);
   }
@@ -70,12 +71,27 @@ mi.controller('fullNodeCtrl', function($scope, sharedUser, NodeFactory, localSto
 });
 
 /* The create node controller is here */
-mi.controller('createCtrl', function($scope, NodeFactory) {
+mi.controller('createCtrl', function($scope, NodeFactory, TaxonomyFactory) {
   var node = [];
-  node.title = "";
-  node.body = "";
 
-  NodeFactory.getNode($scope.globalToken, 107).then(function(data) {
+  NodeFactory.getNode($scope.globalToken, 90).then(function(data) {
     console.log(data.data);
+  });
+
+  $scope.$on('handleTermSelectBroadcast', function() {
+    $scope.termsSelected = TaxonomyFactory.giveTerms();
   })
+
+  $scope.saveNode = function(node) {
+    var nodeSave = {};
+
+    /*saving the node object*/
+    nodeSave.title = node.title;
+    nodeSave.body = node.body;
+    nodeSave.termsSelected = $scope.termsSelected;
+
+    NodeFactory.saveNode($scope.globalToken, $scope.globalUid, nodeSave).then(function(data) {
+      console.log(data.data);
+    });
+  }
 });

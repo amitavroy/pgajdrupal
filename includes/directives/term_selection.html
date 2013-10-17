@@ -1,0 +1,5 @@
+<div class="checkbox" ng-repeat="term in terms" ng-model="terms">
+  <label>
+    <input type="checkbox" ng-model="term.status" ng-change="changed(terms)"> {{term.value}}
+  </label>
+</div>
