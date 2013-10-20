@@ -1,8 +1,10 @@
 mi.controller('globalCtrl', function($scope, localStorageService) {
   $scope.globalNavigationURL = "includes/nav.html";
   $scope.globalAuth = localStorageService.get('auth');
-  $scope.globalToken = $scope.globalAuth.token;
-  $scope.globalUid = $scope.globalAuth.uid;
+  if ($scope.globalAuth) {
+    $scope.globalToken = $scope.globalAuth.token;
+    $scope.globalUid = $scope.globalAuth.uid;
+  }
 });
 
 /*This is the controller for login page.*/
