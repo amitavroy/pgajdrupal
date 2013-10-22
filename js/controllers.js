@@ -1,10 +1,6 @@
-mi.controller('globalCtrl', function($scope, localStorageService) {
+mi.controller('globalCtrl', function($scope, localStorageService, sharedUser) {
   $scope.globalNavigationURL = "includes/nav.html";
-  $scope.globalAuth = localStorageService.get('auth');
-  if ($scope.globalAuth) {
-    $scope.globalToken = $scope.globalAuth.token;
-    $scope.globalUid = $scope.globalAuth.uid;
-  }
+  $scope.globalUserData = sharedUser.getAuthData();
 });
 
 /*This is the controller for login page.*/
@@ -23,6 +19,8 @@ mi.controller('loginCtrl', function($scope, sharedUser, $location) {
 
 /*This is the home page controller.*/
 mi.controller('homeCtrl', function($scope, sharedUser, NodeFactory, localStorageService, $location) {
+
+  /*var temp = sharedUser.getAuthData();
   $scope.auth = localStorageService.get('auth');
   $scope.token = $scope.auth.token;
   $scope.nodes = {};
@@ -56,7 +54,7 @@ mi.controller('homeCtrl', function($scope, sharedUser, NodeFactory, localStorage
 
   $scope.showNode = function(nid) {
     $location.path("node/" + nid);
-  }
+  }*/
 });
 
 mi.controller('fullNodeCtrl', function($scope, sharedUser, NodeFactory, localStorageService, $location, $routeParams) {

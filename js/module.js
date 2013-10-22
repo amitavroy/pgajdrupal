@@ -1,6 +1,6 @@
 /*defining the urls*/
 //var server = "http://staging.focalworks.in/fl360/";
-var server = "http://ob2.focalworks.in:8080/RND/fl360/";
+var server = "http://192.168.3.47/RND/fl360/";
 var loginUrl = server + "rest/user/authenticate";
 var tokenUrl = server + "rest/token/get";
 var latestNodesUrl = server + "rest/node/latest";
@@ -77,6 +77,19 @@ mi.factory('sharedUser', ['$http', 'localStorageService', '$rootScope', '$locati
         cookieData.token = tokenData;
         localStorageService.get('auth', cookieData);
       });
+  };
+
+  user.getAuthData = function() {
+    if (localStorageService.get('auth')) {
+      $rootScope.$on('handleTokenBroadcast', function() {
+
+      });
+
+      return localStorageService.get('auth');
+    }
+    else {
+      return false;
+    }
   };
 
   return user;
