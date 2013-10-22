@@ -1,6 +1,16 @@
 mi.controller('globalCtrl', function($scope, localStorageService, sharedUser) {
   $scope.globalNavigationURL = "includes/nav.html";
   $scope.globalUserData = sharedUser.getAuthData();
+
+  /*during login page the data is not present*/
+  if ($scope.globalUserData) {
+    $scope.globalToken = $scope.globalUserData.token;
+    $scope.globalUid = $scope.globalUserData.uid;
+
+    $scope.$on('handleTokenBroadcast', function(event, token) {
+      $scope.globalToken = token;
+    });
+  }
 });
 
 /*This is the controller for login page.*/
@@ -20,41 +30,33 @@ mi.controller('loginCtrl', function($scope, sharedUser, $location) {
 /*This is the home page controller.*/
 mi.controller('homeCtrl', function($scope, sharedUser, NodeFactory, localStorageService, $location) {
 
-  /*var temp = sharedUser.getAuthData();
-  $scope.auth = localStorageService.get('auth');
-  $scope.token = $scope.auth.token;
   $scope.nodes = {};
 
-  $scope.$on('handleTokenBroadcast', function(event, token) {
-    $scope.token = token;
-  });
-
-  sharedUser.getToken($scope.auth.uid).then(function(data) {
-    NodeFactory.getLatest($scope.token, $scope.auth.uid).then(function(nodes) {
-        var count = nodes.data.length;
-        var keys = [];
-        angular.forEach(nodes.data, function(value, key) {
-          $scope.nodes[key] = value;
-          keys.push(key);
-        });
-
-        var keyMax = Math.max.apply(null, keys);
-        var keyMin = Math.min.apply(null, keys);
-
-        var finalNodes =[];
-        for (var i = keyMax; i >= keyMin; i--) {
-          if ($scope.nodes[i]) {
-            finalNodes.push($scope.nodes[i]);
-          }
-        }
-
-        $scope.finalNodes = finalNodes;
+  NodeFactory.getLatest($scope.globalToken, $scope.globalUid).then(function(nodes) {
+    var count = nodes.data.length;
+    var keys = [];
+    angular.forEach(nodes.data, function(value, key) {
+      $scope.nodes[key] = value;
+      keys.push(key);
     });
+
+    var keyMax = Math.max.apply(null, keys);
+    var keyMin = Math.min.apply(null, keys);
+
+    var finalNodes =[];
+    for (var i = keyMax; i >= keyMin; i--) {
+      if ($scope.nodes[i]) {
+        finalNodes.push($scope.nodes[i]);
+      }
+    }
+
+    $scope.finalNodes = finalNodes;
   });
 
   $scope.showNode = function(nid) {
     $location.path("node/" + nid);
-  }*/
+  }
+
 });
 
 mi.controller('fullNodeCtrl', function($scope, sharedUser, NodeFactory, localStorageService, $location, $routeParams) {

@@ -47,44 +47,14 @@ mi.factory('sharedUser', ['$http', 'localStorageService', '$rootScope', '$locati
           name: userData.name
         };
         localStorageService.add('auth', auth);
+        $rootScope.$broadcast('handleTokenBroadcast', userData.token);
       }).error(function(data, status, headers, config) {
         alert('The username and/or password is wrong.');
       });
   };
 
-  user.getToken = function(uid) {
-    /* if no user id is present or user id is null, then authentication is not correct. */
-    if (!uid || uid == 0) {
-      $location.path('#/login');
-      alert('No user id');
-    }
-    
-    return $http({
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      method: "POST",
-      url: tokenUrl,
-      data: $.param({
-        uid: uid
-      })
-    }).success(function(tokenData) {
-        // updating the token with broadcast
-        $rootScope.$broadcast('handleTokenBroadcast', tokenData);
-
-        // updating the cookie token
-        var cookieData = localStorageService.get('auth');
-        cookieData.token = tokenData;
-        localStorageService.get('auth', cookieData);
-      });
-  };
-
   user.getAuthData = function() {
     if (localStorageService.get('auth')) {
-      $rootScope.$on('handleTokenBroadcast', function() {
-
-      });
-
       return localStorageService.get('auth');
     }
     else {
