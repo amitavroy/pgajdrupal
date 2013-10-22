@@ -1,16 +1,5 @@
 mi.controller('globalCtrl', function($scope, localStorageService, sharedUser) {
   $scope.globalNavigationURL = "includes/nav.html";
-  $scope.globalUserData = sharedUser.getAuthData();
-
-  /*during login page the data is not present*/
-  if ($scope.globalUserData) {
-    $scope.globalToken = $scope.globalUserData.token;
-    $scope.globalUid = $scope.globalUserData.uid;
-
-    $scope.$on('handleTokenBroadcast', function(event, token) {
-      $scope.globalToken = token;
-    });
-  }
 });
 
 /*This is the controller for login page.*/
@@ -29,29 +18,38 @@ mi.controller('loginCtrl', function($scope, sharedUser, $location) {
 
 /*This is the home page controller.*/
 mi.controller('homeCtrl', function($scope, sharedUser, NodeFactory, localStorageService, $location) {
+  try {
+    /*common code*/
+    var authData = sharedUser.getAuthData();
+    $scope.uid = authData.uid;
+    $scope.token = authData.token;
 
-  $scope.nodes = {};
+    $scope.nodes = {};
 
-  NodeFactory.getLatest($scope.globalToken, $scope.globalUid).then(function(nodes) {
-    var count = nodes.data.length;
-    var keys = [];
-    angular.forEach(nodes.data, function(value, key) {
-      $scope.nodes[key] = value;
-      keys.push(key);
-    });
+    NodeFactory.getLatest($scope.token, $scope.uid).then(function(nodes) {
+      var count = nodes.data.length;
+      var keys = [];
+      angular.forEach(nodes.data, function(value, key) {
+        $scope.nodes[key] = value;
+        keys.push(key);
+      });
 
-    var keyMax = Math.max.apply(null, keys);
-    var keyMin = Math.min.apply(null, keys);
+      var keyMax = Math.max.apply(null, keys);
+      var keyMin = Math.min.apply(null, keys);
 
-    var finalNodes =[];
-    for (var i = keyMax; i >= keyMin; i--) {
-      if ($scope.nodes[i]) {
-        finalNodes.push($scope.nodes[i]);
+      var finalNodes =[];
+      for (var i = keyMax; i >= keyMin; i--) {
+        if ($scope.nodes[i]) {
+          finalNodes.push($scope.nodes[i]);
+        }
       }
-    }
 
-    $scope.finalNodes = finalNodes;
-  });
+      $scope.finalNodes = finalNodes;
+    });
+  }
+  catch (err) {
+    alert("There was an error on the page \n " + err);
+  }
 
   $scope.showNode = function(nid) {
     $location.path("node/" + nid);
@@ -60,23 +58,25 @@ mi.controller('homeCtrl', function($scope, sharedUser, NodeFactory, localStorage
 });
 
 mi.controller('fullNodeCtrl', function($scope, sharedUser, NodeFactory, localStorageService, $location, $routeParams) {
-  $scope.auth = localStorageService.get('auth');
-  $scope.token = $scope.auth.token;
+  /*common code*/
+  var authData = sharedUser.getAuthData();
+  $scope.uid = authData.uid;
+  $scope.token = authData.token;
+
   $scope.node = "";
 
-  $scope.$on('handleTokenBroadcast', function(event, token) {
-    $scope.token = token;
-  });
-
   $scope.nid = $routeParams.nid;
-  console.log($scope.nid);
 });
 
 /* The create node controller is here */
-mi.controller('createCtrl', function($scope, NodeFactory, TaxonomyFactory) {
+mi.controller('createCtrl', function($scope, NodeFactory, TaxonomyFactory, sharedUser) {
+  /*common code*/
+  var authData = sharedUser.getAuthData();
+  $scope.uid = authData.uid;
+  $scope.token = authData.token;
   var node = [];
 
-  NodeFactory.getNode($scope.globalToken, 90).then(function(data) {
+  NodeFactory.getNode($scope.token, 90).then(function(data) {
     console.log(data.data);
   });
 
@@ -92,7 +92,7 @@ mi.controller('createCtrl', function($scope, NodeFactory, TaxonomyFactory) {
     nodeSave.body = node.body;
     nodeSave.termsSelected = $scope.termsSelected;
 
-    NodeFactory.saveNode($scope.globalToken, $scope.globalUid, nodeSave).then(function(data) {
+    NodeFactory.saveNode($scope.token, $scope.uid, nodeSave).then(function(data) {
       console.log(data.data);
     });
   }

@@ -1,6 +1,6 @@
 /*defining the urls*/
 //var server = "http://staging.focalworks.in/fl360/";
-var server = "http://192.168.3.47/RND/fl360/";
+var server = "http://ob2.focalworks.in:8080/RND/fl360/";
 var loginUrl = server + "rest/user/authenticate";
 var tokenUrl = server + "rest/token/get";
 var latestNodesUrl = server + "rest/node/latest";
@@ -58,7 +58,7 @@ mi.factory('sharedUser', ['$http', 'localStorageService', '$rootScope', '$locati
       return localStorageService.get('auth');
     }
     else {
-      return false;
+      $location.path('#/login');
     }
   };
 
@@ -84,6 +84,7 @@ mi.factory('NodeFactory', ['$http', function($http) {
   };
 
   Node.getLatest = function(token, uid) {
+    console.log(token);
     return $http({
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
