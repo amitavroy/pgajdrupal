@@ -58,14 +58,19 @@ mi.controller('homeCtrl', function($scope, sharedUser, NodeFactory, localStorage
 });
 
 mi.controller('fullNodeCtrl', function($scope, sharedUser, NodeFactory, localStorageService, $location, $routeParams) {
-  /*common code*/
-  var authData = sharedUser.getAuthData();
-  $scope.uid = authData.uid;
-  $scope.token = authData.token;
+  try {
+    /*common code*/
+    var authData = sharedUser.getAuthData();
+    $scope.uid = authData.uid;
+    $scope.token = authData.token;
 
-  $scope.node = "";
+    $scope.node = "";
 
-  $scope.nid = $routeParams.nid;
+    $scope.nid = $routeParams.nid;
+  }
+  catch (err) {
+    alert("There was an error on the page \n " + err);
+  }
 });
 
 /* The create node controller is here */
