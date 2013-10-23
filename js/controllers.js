@@ -77,11 +77,12 @@ mi.controller('createCtrl', function($scope, NodeFactory, TaxonomyFactory, share
   var node = [];
 
   NodeFactory.getNode($scope.token, 90).then(function(data) {
-    console.log(data.data);
+//    console.log(data.data);
   });
 
   $scope.$on('handleTermSelectBroadcast', function() {
     $scope.termsSelected = TaxonomyFactory.giveTerms();
+//    console.log($scope.termsSelected);
   })
 
   $scope.saveNode = function(node) {
@@ -90,10 +91,17 @@ mi.controller('createCtrl', function($scope, NodeFactory, TaxonomyFactory, share
     /*saving the node object*/
     nodeSave.title = node.title;
     nodeSave.body = node.body;
-    nodeSave.termsSelected = $scope.termsSelected;
+    nodeSave.termsSelected = [];
+
+    angular.forEach($scope.termsSelected, function(value, key) {
+      /*pushing the ids which are selected*/
+      if (value.status == true) {
+        nodeSave.termsSelected.push(value.id);
+      }
+    });
 
     NodeFactory.saveNode($scope.token, $scope.uid, nodeSave).then(function(data) {
-      console.log(data.data);
+//      console.log(data.data);
     });
   }
 });

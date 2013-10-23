@@ -1,6 +1,6 @@
 /*defining the urls*/
 //var server = "http://staging.focalworks.in/fl360/";
-var server = "http://ob2.focalworks.in:8080/RND/fl360/";
+var server = "http://192.168.3.47/RND/fl360/";
 var loginUrl = server + "rest/user/authenticate";
 var tokenUrl = server + "rest/token/get";
 var latestNodesUrl = server + "rest/node/latest";
@@ -84,7 +84,6 @@ mi.factory('NodeFactory', ['$http', function($http) {
   };
 
   Node.getLatest = function(token, uid) {
-    console.log(token);
     return $http({
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -110,7 +109,8 @@ mi.factory('NodeFactory', ['$http', function($http) {
       data: $.param({
         title: NodeData.title,
         body: NodeData.body,
-        uid: uid
+        uid: uid,
+        terms: NodeData.termsSelected
       })
     }).success(function(data) {
       });
