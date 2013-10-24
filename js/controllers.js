@@ -74,7 +74,7 @@ mi.controller('fullNodeCtrl', function($scope, sharedUser, NodeFactory, localSto
 });
 
 /* The create node controller is here */
-mi.controller('createCtrl', function($scope, NodeFactory, TaxonomyFactory, sharedUser) {
+mi.controller('createCtrl', function($scope, NodeFactory, TaxonomyFactory, sharedUser, $location) {
   /*common code*/
   var authData = sharedUser.getAuthData();
   $scope.uid = authData.uid;
@@ -82,12 +82,10 @@ mi.controller('createCtrl', function($scope, NodeFactory, TaxonomyFactory, share
   var node = [];
 
   NodeFactory.getNode($scope.token, 90).then(function(data) {
-//    console.log(data.data);
   });
 
   $scope.$on('handleTermSelectBroadcast', function() {
     $scope.termsSelected = TaxonomyFactory.giveTerms();
-//    console.log($scope.termsSelected);
   })
 
   $scope.saveNode = function(node) {
@@ -106,7 +104,11 @@ mi.controller('createCtrl', function($scope, NodeFactory, TaxonomyFactory, share
     });
 
     NodeFactory.saveNode($scope.token, $scope.uid, nodeSave).then(function(data) {
-//      console.log(data.data);
+      $('#nodeSuccess').modal();
     });
   }
+
+  $scope.goBackHome = function() {
+    $location.path("/home");
+  };
 });

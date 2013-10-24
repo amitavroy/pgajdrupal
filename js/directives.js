@@ -76,3 +76,17 @@ mi.directive('termselection', function() {
     }
   }
 });
+
+/*directive for the modal pop up*/
+mi.directive('modalpopup', function() {
+  return {
+    restrict: 'E',
+    templateUrl: 'includes/directives/modal.html',
+    scope: {
+      popuptitle: '@',
+      bodymessage: '@',
+      savebutton: '='
+    },
+    link: function (scope, element, attrs) {}
+  };
+});
