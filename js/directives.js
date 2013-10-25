@@ -136,7 +136,7 @@ mi.directive('commentform', function() {
     link: function (scope, element, attrs) {
 
     },
-    controller: function ($scope, $http) {
+    controller: function ($scope, $http, sharedUser, $location) {
       $scope.saveComment = function(commentbody, nodeid) {
         if (!commentbody) {
           $('#nodeSuccess').modal();
@@ -155,10 +155,12 @@ mi.directive('commentform', function() {
             data: $.param({
               nid: nodeid,
               uid: $scope.uid,
-              comment: commentbody
+              comment: commentbody,
+              commenttitle: trim_view(commentbody, 50)
             })
           }).success(function(data) {
-
+              console.log(data)
+              $location.path("/node/" + nodeid);
             });
         }
       }

@@ -1,7 +1,7 @@
 /*defining the urls*/
 //var server = "http://staging.focalworks.in/fl360/";
 var server = "http://192.168.3.47/RND/fl360/";
-var server = "http://ob2.focalworks.in:8080/RND/fl360/";
+var server = "http://localhost/office/fl360/";
 var loginUrl = server + "rest/user/authenticate";
 var tokenUrl = server + "rest/token/get";
 var latestNodesUrl = server + "rest/node/latest";
