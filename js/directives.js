@@ -45,7 +45,6 @@ mi.directive('node', function() {
       
       NodeFactory.getNode($scope.token, $scope.nid).then(function(thisNode) {
         var node = thisNode.data;
-        console.log(node);
         
         $scope.nodetitle = node.title;
         
@@ -122,7 +121,6 @@ mi.directive('commentsfull', function() {
       comment: '='
     },
     link: function (scope, element, attrs) {
-      console.log(scope.comment);
     }
   };
 });
@@ -133,12 +131,37 @@ mi.directive('commentform', function() {
     restrict: 'E',
     templateUrl: 'includes/directives/commentform.html',
     scope: {
-      popuptitle: '@',
-      bodymessage: '@',
-      savebutton: '='
+      nodeid: '@'
     },
     link: function (scope, element, attrs) {
-      console.log(scope);
+
+    },
+    controller: function ($scope, $http) {
+      $scope.saveComment = function(commentbody, nodeid) {
+        if (!commentbody) {
+          $('#nodeSuccess').modal();
+        }
+        else {
+          var authData = sharedUser.getAuthData();
+          $scope.uid = authData.uid;
+          $scope.token = authData.token;
+
+          $http({
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            method: "POST",
+            url: commentSave,
+            data: $.param({
+              nid: nodeid,
+              uid: $scope.uid,
+              comment: commentbody
+            })
+          }).success(function(data) {
+
+            });
+        }
+      }
     }
   };
 });

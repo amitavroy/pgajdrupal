@@ -1,12 +1,14 @@
 /*defining the urls*/
 //var server = "http://staging.focalworks.in/fl360/";
 var server = "http://192.168.3.47/RND/fl360/";
+var server = "http://ob2.focalworks.in:8080/RND/fl360/";
 var loginUrl = server + "rest/user/authenticate";
 var tokenUrl = server + "rest/token/get";
 var latestNodesUrl = server + "rest/node/latest";
 var singleNodeUrl = server + "rest/getnode/";
 var vocabLoadUrl = server + "rest/getterms/";
 var nodeSave = server + "rest/savenode/";
+var commentSave = server + "rest/savecomment/";
 
 /*defining the module*/
 var mi = angular.module('mi', ['LocalStorageModule', 'ui.tinymce']);

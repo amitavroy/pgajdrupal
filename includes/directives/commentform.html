@@ -1,5 +1,15 @@
-<form action="">
+<form>
+
   <div class="form-group">
-    <textarea name="usercomment" id="" class="form-control"></textarea>
+    <textarea name="usercomment" id="" class="form-control" ng-model="commentbody"></textarea>
   </div>
+
+  <div class="form-group">
+    <button class="btn btn-primary" ng-click="saveComment(commentbody, nodeid)">Save</button>
+  </div>
+
+  <modalpopup popuptitle="Comment body not present"
+              bodymessage="You need to write something to save a comment."
+              savebutton="false"></modalpopup>
+
 </form>

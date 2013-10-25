@@ -57,7 +57,7 @@ mi.controller('homeCtrl', function($scope, sharedUser, NodeFactory, localStorage
 
 });
 
-mi.controller('fullNodeCtrl', function($scope, sharedUser, NodeFactory, localStorageService, $location, $routeParams) {
+mi.controller('fullNodeCtrl', function($scope, sharedUser, NodeFactory, localStorageService, $routeParams) {
   try {
     /*common code*/
     var authData = sharedUser.getAuthData();
