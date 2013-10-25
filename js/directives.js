@@ -9,11 +9,18 @@ mi.directive('teaser', function() {
     },
     link: function (scope, element, attrs) {
       scope.node = [];
-      // console.log(scope.object.title);
       var title = scope.object.title;
 
       scope.node.title = title;
       scope.node.name = scope.object.name;
+      bodyString = scope.object.body.und[0].value;
+      try {
+        bodyString = $(bodyString).text();
+      }
+      catch (e){
+        /*do nothing*/
+      }
+      scope.node.body = trim_view(bodyString, 200);
     }
   };
 });
