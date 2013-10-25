@@ -45,13 +45,28 @@ mi.directive('node', function() {
       
       NodeFactory.getNode($scope.token, $scope.nid).then(function(thisNode) {
         var node = thisNode.data;
+        console.log(node);
         
         $scope.nodetitle = node.title;
         
-        // if body copy is not present.
+        /* if body copy is not present */
         if (node.body.und) {
           $scope.body = node.body.und[0].safe_value;
         }
+
+        /* comment count */
+        $scope.commentFlag = (node.comment == 2) ? true : false;
+        $scope.commentText = "Comments";
+        if (node.comment_count == 0) {
+          $scope.commentText = "Be the first to comment";
+        }
+
+        $scope.commentcount = (node.comment_count > 1) ? node.comment_count + " Comments" : node.comment_count + " Comment";
+
+        if ($scope.commentFlag) {
+          $comments = node.all_comments;
+          $scope.comments = $comments;
+        };
       });
     }
   };
@@ -95,5 +110,35 @@ mi.directive('modalpopup', function() {
       savebutton: '='
     },
     link: function (scope, element, attrs) {}
+  };
+});
+
+/*directive for the comment form*/
+mi.directive('commentsfull', function() {
+  return {
+    restrict: 'E',
+    templateUrl: 'includes/directives/commentsfull.html',
+    scope: {
+      comment: '='
+    },
+    link: function (scope, element, attrs) {
+      console.log(scope.comment);
+    }
+  };
+});
+
+/*directive for the comment form*/
+mi.directive('commentform', function() {
+  return {
+    restrict: 'E',
+    templateUrl: 'includes/directives/commentform.html',
+    scope: {
+      popuptitle: '@',
+      bodymessage: '@',
+      savebutton: '='
+    },
+    link: function (scope, element, attrs) {
+      console.log(scope);
+    }
   };
 });

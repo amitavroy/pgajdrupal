@@ -3,3 +3,18 @@
 <div class="content" ng-bind-html-unsafe="body">
   {{body}}
 </div>
+
+<div class="comment-wrapper" ng-show="commentFlag">
+  <h2 class="comment-title">{{ commentText }}</h2>
+
+  <span class="comment-count clearfix">{{ commentcount }}</span>
+
+  <div class="comments" ng-repeat="comment in comments">
+    <commentsfull comment="comment"></commentsfull>
+  </div>
+
+  <commentform></commentform>
+
+</div>
+
+  <br>
