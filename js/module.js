@@ -1,7 +1,9 @@
 /*defining the urls*/
+
 //var server = "http://staging.focalworks.in/fl360/";
-var server = "http://192.168.3.47/RND/fl360/";
+// var server = "http://192.168.3.47/RND/fl360/";
 var server = "http://localhost/office/fl360/";
+
 var loginUrl = server + "rest/user/authenticate";
 var tokenUrl = server + "rest/token/get";
 var latestNodesUrl = server + "rest/node/latest";
@@ -43,6 +45,7 @@ mi.factory('sharedUser', ['$http', 'localStorageService', '$rootScope', '$locati
         password: password
       })
     }).success(function(userData) {
+        /* adding the fetched data into local storage for future use*/
         var auth = {
           token: userData.token,
           uid: userData.uid,
@@ -55,6 +58,7 @@ mi.factory('sharedUser', ['$http', 'localStorageService', '$rootScope', '$locati
       });
   };
 
+  /* all calls to fetch auth data would come here */
   user.getAuthData = function() {
     if (localStorageService.get('auth')) {
       return localStorageService.get('auth');
@@ -73,6 +77,7 @@ mi.factory('NodeFactory', ['$http', function($http) {
 
   /*Node.getNodeMultiple = function() {};*/
 
+  /* to fetch a single node */
   Node.getNode = function(token, nid) {
     return $http({
       headers: {
@@ -85,6 +90,7 @@ mi.factory('NodeFactory', ['$http', function($http) {
     });
   };
 
+  /* this is to fetch a list of latest node based on the view in drupal */
   Node.getLatest = function(token, uid) {
     return $http({
       headers: {
@@ -96,10 +102,10 @@ mi.factory('NodeFactory', ['$http', function($http) {
       data: $.param({
         uid: uid
       })
-    }).success(function(data) {
-      });
+    }).success(function(data) {});
   };
 
+  /* save node taking the data from the form and passing it as post data */
   Node.saveNode = function(token, uid, NodeData) {
     return $http({
       headers: {
@@ -114,8 +120,7 @@ mi.factory('NodeFactory', ['$http', function($http) {
         uid: uid,
         terms: NodeData.termsSelected
       })
-    }).success(function(data) {
-      });
+    }).success(function(data) {});
   }
 
   return Node;
