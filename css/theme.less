@@ -1,0 +1,90 @@
+/* theme file */
+
+@path: '../images/';
+@white: #FFF;
+
+/* Mixins */
+.shadow (@shadow:0) {
+	box-shadow: @shadow;
+	-moz-box-shadow: @shadow;
+	-webkit-box-shadow: @shadow;
+}
+.col-sm-12 {
+	padding-right: 0;
+	padding-left: 0;
+}
+
+/* Navigation */
+nav.navbar {
+	background: #33576d;
+	color: @white;
+	margin-bottom: 3px;
+	.icon-menu-navbar-header {
+		background: url('@{path}left_side_menu.png') 50% 50% no-repeat;
+		border-right: 1px solid #223c4b;
+		cursor: pointer;
+		height: 22px;
+		padding: 35px 48px;
+		width: 40px;
+	}
+	.icon-plus-navbar-header {
+		background: url('@{path}adddiscussion.png') 50% 50% no-repeat;
+		cursor: pointer;	
+		height: 30px;
+		margin: 20px 30px;
+		width: 30px;
+	}
+	a:link, a:visited {
+		color: @white;
+		&:hover {
+			color: darken(@white, 30%);
+		}
+	}
+	.navbar-nav {
+		li {
+			a {
+				padding-top: 25px;
+				padding-bottom: 25px;
+			}
+		}
+	}
+}
+
+/* Main Content */
+.main-content-wrapper {
+	padding: 40px 30px;
+	.shadow(inset 0 20px 15px -14px #b2b4b1);
+	.node {
+		&.teaser {
+			margin-bottom: 30px;
+			.shadow(0 0 10px #b2b4b1);
+			.meta-container {
+				color: #bebebe;
+				span {
+					color: darken(#bebebe, 30%);
+					&:hover {
+						color: #bebebe;
+					}
+				}
+			}
+		}
+	}
+	node {	
+		h1 {
+			margin-top: 0;
+		}
+		.comment-wrapper {
+			.comment-count {
+				background: #c0c0c0;
+				color: @white;
+				font-weight: bold;
+				padding: 10px;
+			}
+			.comments {
+				border-bottom: 1px solid #dcdcdc;
+				margin-bottom: 10px;
+				padding-bottom: 10px;
+			}
+		}
+	}
+}

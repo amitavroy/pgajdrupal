@@ -1,0 +1,75 @@
+/* theme file */
+/* Mixins */
+.col-sm-12 {
+  padding-right: 0;
+  padding-left: 0;
+}
+/* Navigation */
+nav.navbar {
+  background: #33576d;
+  color: #ffffff;
+  margin-bottom: 3px;
+}
+nav.navbar .icon-menu-navbar-header {
+  background: url('../images/left_side_menu.png') 50% 50% no-repeat;
+  border-right: 1px solid #223c4b;
+  cursor: pointer;
+  height: 22px;
+  padding: 35px 48px;
+  width: 40px;
+}
+nav.navbar .icon-plus-navbar-header {
+  background: url('../images/adddiscussion.png') 50% 50% no-repeat;
+  cursor: pointer;
+  height: 30px;
+  margin: 20px 30px;
+  width: 30px;
+}
+nav.navbar a:link,
+nav.navbar a:visited {
+  color: #ffffff;
+}
+nav.navbar a:link:hover,
+nav.navbar a:visited:hover {
+  color: #b3b3b3;
+}
+nav.navbar .navbar-nav li a {
+  padding-top: 25px;
+  padding-bottom: 25px;
+}
+/* Main Content */
+.main-content-wrapper {
+  padding: 40px 30px;
+  box-shadow: inset 0 20px 15px -14px #b2b4b1;
+  -moz-box-shadow: inset 0 20px 15px -14px #b2b4b1;
+  -webkit-box-shadow: inset 0 20px 15px -14px #b2b4b1;
+}
+.main-content-wrapper .node.teaser {
+  margin-bottom: 30px;
+  box-shadow: 0 0 10px #b2b4b1;
+  -moz-box-shadow: 0 0 10px #b2b4b1;
+  -webkit-box-shadow: 0 0 10px #b2b4b1;
+}
+.main-content-wrapper .node.teaser .meta-container {
+  color: #bebebe;
+}
+.main-content-wrapper .node.teaser .meta-container span {
+  color: #727272;
+}
+.main-content-wrapper .node.teaser .meta-container span:hover {
+  color: #bebebe;
+}
+.main-content-wrapper node h1 {
+  margin-top: 0;
+}
+.main-content-wrapper node .comment-wrapper .comment-count {
+  background: #c0c0c0;
+  color: #ffffff;
+  font-weight: bold;
+  padding: 10px;
+}
+.main-content-wrapper node .comment-wrapper .comments {
+  border-bottom: 1px solid #dcdcdc;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+}

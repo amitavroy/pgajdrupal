@@ -5,9 +5,9 @@
 </div>
 
 <div class="comment-wrapper" ng-show="commentFlag">
-  <h2 class="comment-title">{{ commentText }}</h2>
+  <!--<h2 class="comment-title">{{ commentText }}</h2>-->
 
-  <span class="comment-count clearfix">{{ commentcount }}</span>
+  <div class="comment-count clearfix">{{ commentcount }}</div>
 
   <div class="comments" ng-repeat="comment in comments">
     <commentsfull comment="comment"></commentsfull>
